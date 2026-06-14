@@ -1,0 +1,36 @@
+<div class="calc-shell">
+  <div class="description">
+    <strong>Retirement Planner</strong>
+    <p>Project your retirement corpus based on current savings and monthly contributions. Use conservative return assumptions and adjust contributions to see how they impact your future comfort.</p>
+  </div>
+
+  <div class="grid">
+    <div class="inputs">
+      <label>Current age
+        <input type="number" [(ngModel)]="currentAge" (input)="calculate()" />
+      </label>
+      <label>Retirement age
+        <input type="number" [(ngModel)]="retirementAge" (input)="calculate()" />
+      </label>
+      <label>Current savings
+        <input type="number" [(ngModel)]="currentSavings" (input)="calculate()" />
+      </label>
+      <label>Monthly contribution
+        <input type="number" [(ngModel)]="monthlyContribution" (input)="calculate()" />
+      </label>
+      <label>Expected return (p.a.)
+        <input type="number" [(ngModel)]="rate" (input)="calculate()" />
+      </label>
+
+      <div class="results">
+        <div class="row"><span>Invested amount</span><strong>₹{{ invested | number:'1.0-0' }}</strong></div>
+        <div class="row"><span>Est. returns</span><strong>₹{{ estimatedReturns | number:'1.0-0' }}</strong></div>
+        <div class="row total"><span>Total value at retirement</span><strong>₹{{ totalValue | number:'1.0-0' }}</strong></div>
+      </div>
+    </div>
+
+    <div class="chart">
+      <div class="chart-wrap"><canvas #pieCanvas></canvas></div>
+    </div>
+  </div>
+</div>

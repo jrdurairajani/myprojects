@@ -1,0 +1,30 @@
+<div class="calc-shell">
+  <div class="description">
+    <strong>Credit Card EMI Calculator</strong>
+    <p>Convert your credit card outstanding into easy monthly EMIs. Enter your outstanding balance, expected annual interest rate, and desired tenure to see the EMI and total payable amount.</p>
+  </div>
+
+  <div class="grid">
+    <div class="inputs">
+      <label>Outstanding amount
+        <input type="number" [(ngModel)]="outstanding" (input)="calculate()" />
+      </label>
+      <label>Expected annual rate (p.a.)
+        <input type="number" [(ngModel)]="rate" (input)="calculate()" />
+      </label>
+      <label>Tenure (months)
+        <input type="number" [(ngModel)]="months" (input)="calculate()" />
+      </label>
+
+      <div class="results">
+        <div class="row"><span>Monthly EMI</span><strong>₹{{ emi | number:'1.0-0' }}</strong></div>
+        <div class="row"><span>Total interest</span><strong>₹{{ interest | number:'1.0-0' }}</strong></div>
+        <div class="row total"><span>Total payable</span><strong>₹{{ totalPayable | number:'1.0-0' }}</strong></div>
+      </div>
+    </div>
+
+    <div class="chart">
+      <div class="chart-wrap"><canvas #pieCanvas></canvas></div>
+    </div>
+  </div>
+</div>

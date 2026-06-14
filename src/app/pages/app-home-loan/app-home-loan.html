@@ -1,0 +1,96 @@
+<section class="home-loan-shell">
+  <div class="hero-row">
+    <div class="hero-copy">
+      <h1>Home Loan Calculator</h1>
+      <p>Plan your home loan with EMI, charges, and monthly expense details in one dashboard.</p>
+    </div>
+    <div class="hero-cta">
+      <div class="hero-card">
+        <strong>Track monthly payments</strong>
+        <p>Get a clear picture of principal, interest and expense breakdown for your home loan.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="input-panel">
+    <div class="input-row">
+      <label>Home value (₹)</label>
+      <input type="number" [(ngModel)]="loanValue" (input)="calculate()">
+    </div>
+    <div class="input-row">
+      <label>Down payment (%)</label>
+      <input type="number" [(ngModel)]="downPayment" (input)="calculate()">
+    </div>
+    <div class="input-row">
+      <label>Loan insurance (%)</label>
+      <input type="number" [(ngModel)]="insurance" (input)="calculate()">
+    </div>
+    <div class="input-row">
+      <label>Loan amount (₹)</label>
+      <input [value]="principal | number:'1.0-0'" readonly>
+    </div>
+    <div class="input-row">
+      <label>Interest rate (%)</label>
+      <input type="number" [(ngModel)]="rate" (input)="calculate()">
+    </div>
+    <div class="input-row">
+      <label>Loan tenure (yrs)</label>
+      <input type="number" [(ngModel)]="years" (input)="calculate()">
+    </div>
+    <div class="input-row">
+      <label>Start month/year</label>
+      <input type="text" [(ngModel)]="startMonth" (input)="calculate()">
+    </div>
+    <div class="input-row">
+      <label>Maintenance per month</label>
+      <input type="number" [(ngModel)]="maintenance" (input)="calculate()">
+    </div>
+  </div>
+
+  <div class="summary-panel">
+    <div class="summary-card">
+      <span>Total monthly payment</span>
+      <strong>₹ {{ emi | number:'1.0-0' }}</strong>
+    </div>
+    <div class="summary-card">
+      <span>Total interest payable</span>
+      <strong>₹ {{ totalInterest | number:'1.0-0' }}</strong>
+    </div>
+    <div class="summary-card highlight">
+      <span>Estimated total payment</span>
+      <strong>₹ {{ totalPayment | number:'1.0-0' }}</strong>
+    </div>
+  </div>
+
+  <div class="chart-and-table">
+    <div class="chart-card">
+      <canvas #pieCanvas></canvas>
+    </div>
+    <div class="table-panel">
+      <div class="table-header">
+        <h2>Home Loan Payment Schedule</h2>
+        <p>Preview the first 12 months of principal, interest and balance.</p>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Month</th>
+            <th>Principal</th>
+            <th>Interest</th>
+            <th>Total EMI</th>
+            <th>Balance</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of schedule">
+            <td>{{ row.month }}</td>
+            <td>₹ {{ row.principal | number:'1.0-0' }}</td>
+            <td>₹ {{ row.interest | number:'1.0-0' }}</td>
+            <td>₹ {{ row.total | number:'1.0-0' }}</td>
+            <td>₹ {{ row.balance | number:'1.0-0' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,33 @@
+<div class="topbar">
+    <div class="topbar__brand">
+        <a routerLink="/" class="brand-link">
+            <img src="./../assets/svg/calculator.svg" alt="EMI Calculator">EMI Calculator</a>
+    </div>
+    <div class="topbar__links desktop-only">
+        <a routerLink="/home-loan">Home Loan</a>
+        <a routerLink="/articles">Articles</a>
+    </div>
+    <button class="mobile-menu-button mobile-only" type="button" (click)="toggleMobileMenu()">
+        <span class="material-icons">menu</span>
+    </button>
+</div>
+
+<nav class="mobile-nav mobile-only" [class.open]="mobileMenuOpen">
+    <a routerLink="/home-loan" (click)="toggleMobileMenu()">Home Loan</a>
+    <a routerLink="/articles" (click)="toggleMobileMenu()">Articles</a>
+</nav>
+
+<main class="app-main">
+    <router-outlet></router-outlet>
+</main>
+
+<footer class="app-footer">
+  <div class="footer-links">
+    <a routerLink="/about">About</a>
+    <a routerLink="/contact">Contact</a>
+    <a routerLink="/privacy-policy">Privacy Policy</a>
+    <a routerLink="/disclaimer">Disclaimer</a>
+    <a routerLink="/terms">Terms</a>
+  </div>
+  <div class="footer-copy">© {{ currentYear }} EMI Calculator. All rights reserved.</div>
+</footer>

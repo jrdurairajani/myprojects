@@ -1,0 +1,29 @@
+<div class="calc-shell">
+  <div class="description">
+    <strong>Fixed Deposit Calculator</strong>
+    <p>Estimate the future value of a fixed deposit using compound interest. Enter the principal, expected annual rate, and tenure to see your projected returns.</p>
+  </div>
+  <div class="grid">
+    <div class="inputs">
+      <label>Invested amount
+        <input type="number" [(ngModel)]="amount" (input)="calculate()" />
+      </label>
+      <label>Expected return rate (p.a.)
+        <input type="number" [(ngModel)]="rate" (input)="calculate()" />
+      </label>
+      <label>Time period (years)
+        <input type="number" [(ngModel)]="years" (input)="calculate()" />
+      </label>
+
+      <div class="results">
+        <div class="row"><span>Invested amount</span><strong>₹{{ invested | number:'1.0-0' }}</strong></div>
+        <div class="row"><span>Est. returns</span><strong>₹{{ estimatedReturns | number:'1.0-0' }}</strong></div>
+        <div class="row total"><span>Total value</span><strong>₹{{ totalValue | number:'1.0-0' }}</strong></div>
+      </div>
+    </div>
+
+    <div class="chart">
+      <div class="chart-wrap"><canvas #pieCanvas></canvas></div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,257 @@
+<div class="calculator-shell">
+  <mat-card class="calculator-card">
+    <div class="card-header">
+      <div>
+        <h2>Loan Details</h2>
+        <p>Enter the loan amount, interest rate, tenure and start month to preview your EMI instantly.</p>
+      </div>
+      <span class="badge">EMI Calculator</span>
+    </div>
+
+    <div class="form-grid">
+      <div class="field-block">
+        <label for="loanAmount">Loan Amount (₹)</label>
+        <mat-form-field appearance="outline">
+          <input id="loanAmount" matInput type="number" [(ngModel)]="loanAmount" (input)="calculateEMI()">
+        </mat-form-field>
+        <div class="value-text">₹ {{ loanAmountWords | uppercase }} IN RUPEES</div>
+        <mat-slider min="100000" max="10000000" step="10000">
+          <input matSliderThumb [(ngModel)]="loanAmount" (ngModelChange)="calculateEMI()">
+        </mat-slider>
+      </div>
+
+      <div class="field-block">
+        <label for="interestRate">Interest Rate (% per annum)</label>
+        <mat-form-field appearance="outline">
+          <input id="interestRate" matInput type="number" [(ngModel)]="interestRate" (input)="calculateEMI()">
+        </mat-form-field>
+        <mat-slider min="1" max="20" step="0.1">
+          <input matSliderThumb [(ngModel)]="interestRate" (ngModelChange)="calculateEMI()">
+        </mat-slider>
+      </div>
+
+      <div class="field-block">
+        <label for="tenureYears">Loan Tenure (Years)</label>
+        <mat-form-field appearance="outline">
+          <input id="tenureYears" matInput type="number" [(ngModel)]="tenureYears" (input)="calculateEMI()">
+        </mat-form-field>
+        <mat-slider min="1" max="30" step="1">
+          <input matSliderThumb [(ngModel)]="tenureYears" (ngModelChange)="calculateEMI()">
+        </mat-slider>
+      </div>
+
+      <div class="calendar-block">
+        <label>EMI Start Month and Year</label>
+        <mat-form-field appearance="outline">
+          <mat-label>EMI Start (Month & Year)</mat-label>
+          <input matInput readonly [value]="startDate | date:'MMM yyyy'" [matDatepicker]="dp">
+          <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+          <mat-datepicker #dp startView="multi-year" (monthSelected)="chosenMonthHandler($event, dp)">
+          </mat-datepicker>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="payment-breakup-grid">
+      <div class="breakup-summary">
+        <div class="breakup-card">
+          <div class="breakup-label">Loan EMI</div>
+          <div class="breakup-value">₹ {{ emi | number:'1.0-0' }}</div>
+        </div>
+        <div class="breakup-card">
+          <div class="breakup-label">Total Interest Payable</div>
+          <div class="breakup-value">₹ {{ totalInterest | number:'1.0-0' }}</div>
+        </div>
+        <div class="breakup-card breakup-card--highlight">
+          <div class="breakup-label">Total Payment</div>
+          <div class="breakup-value">₹ {{ totalAmount | number:'1.0-0' }}</div>
+        </div>
+      </div>
+
+      <div class="chart-panel chart-panel--breakup">
+        <div class="chart-panel-heading">
+          <div>
+            <h3>Break-up of Total Payment</h3>
+            <p>Principal loan amount compared with total interest payable.</p>
+          </div>
+          <div class="chart-panel-meta">Principal: 
+            <br>₹ {{ loanAmount | number:'1.0-0' }}</div>
+        </div>
+        <div class="chart-container">
+          <canvas #pieChart></canvas>
+        </div>
+        <div class="chart-summary">
+          <div class="chart-stat">
+            <span class="chart-swatch principal"></span>
+            <div>
+              <strong>Principal</strong>
+              <span>₹ {{ loanAmount | number:'1.0-0' }}</span>
+            </div>
+          </div>
+          <div class="chart-stat">
+            <span class="chart-swatch interest"></span>
+            <div>
+              <strong>Interest</strong>
+              <span>₹ {{ totalInterest | number:'1.0-0' }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button mat-raised-button color="primary" aria-label="Calculate EMI">
+        <mat-icon>calculate</mat-icon>
+        Calculate EMI
+      </button>
+    </div>
+  </mat-card>
+
+  <mat-card class="results-card">
+    <div class="results-header">
+      <div>
+        <h2>Loan EMI Amortization Schedule</h2>
+        <p>View monthly and annual repayment details including principal, interest and outstanding balance.</p>
+      </div>
+      <span class="result-chip">Schedule overview</span>
+    </div>
+
+    <!-- <mat-accordion>
+      <mat-expansion-panel *ngFor="let y of yearlyData" [expanded]="expandedYears[y.year]">
+        <mat-expansion-panel-header (click)="toggleYear(y.year)">
+          <mat-panel-title>
+            Loan Repayment Schedule - {{ y.year }}
+          </mat-panel-title>
+          <mat-panel-description>
+            <span class="schedule-detail"><strong>Principal:</strong> ₹{{ y.principal | number:'1.0-0' }}</span>
+            <span class="schedule-detail"><strong>Interest:</strong> ₹{{ y.interest | number:'1.0-0' }}</span>
+            <span class="schedule-detail"><strong>Total:</strong> ₹{{ y.total | number:'1.0-0' }}</span>
+            <span class="schedule-detail"><strong>Balance:</strong> ₹{{ y.balance | number:'1.0-0' }}</span>
+            <span class="schedule-detail"><strong>Paid:</strong> {{ y.paidToDate | number:'1.2-2' }}%</span>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <div class="monthly-expanded">
+          <h3>Monthly EMI Schedule for {{ y.year }}</h3>
+          <table mat-table [dataSource]="y.months" class="mat-elevation-z1 monthly-table">
+            <ng-container matColumnDef="month">
+              <th mat-header-cell *matHeaderCellDef>Month</th>
+              <td mat-cell *matCellDef="let m" [attr.data-label]="'Month'">{{ m.monthLabel }}</td>
+            </ng-container>
+            <ng-container matColumnDef="emi">
+              <th mat-header-cell *matHeaderCellDef>EMI Amount</th>
+              <td mat-cell *matCellDef="let m" [attr.data-label]="'EMI Amount'">₹ {{ m.emi | number:'1.0-0' }}</td>
+            </ng-container>
+            <ng-container matColumnDef="principal">
+              <th mat-header-cell *matHeaderCellDef>Principal</th>
+              <td mat-cell *matCellDef="let m" [attr.data-label]="'Principal'">₹ {{ m.principal | number:'1.0-0' }}</td>
+            </ng-container>
+            <ng-container matColumnDef="interest">
+              <th mat-header-cell *matHeaderCellDef>Interest</th>
+              <td mat-cell *matCellDef="let m" [attr.data-label]="'Interest'">₹ {{ m.interest | number:'1.0-0' }}</td>
+            </ng-container>
+            <ng-container matColumnDef="balance">
+              <th mat-header-cell *matHeaderCellDef>Outstanding Balance</th>
+              <td mat-cell *matCellDef="let m" [attr.data-label]="'Outstanding Balance'">₹ {{ m.balance | number:'1.0-0' }}</td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="['month','emi','principal','interest','balance']"></tr>
+            <tr mat-row *matRowDef="let row; columns: ['month','emi','principal','interest','balance'];"></tr>
+          </table>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion> -->
+
+    <mat-accordion>
+      <mat-expansion-panel *ngFor="let y of yearlyData" [expanded]="expandedYears[y.year]">
+        <mat-expansion-panel-header (click)="toggleYear(y.year)">
+          <mat-panel-title>
+            Loan Repayment Schedule - {{ y.year }}
+          </mat-panel-title>
+          <mat-panel-description>
+            <span class="schedule-detail"><strong>Principal:</strong> ₹{{ y.principal | number:'1.0-0' }}</span>
+            <span class="schedule-detail"><strong>Interest:</strong> ₹{{ y.interest | number:'1.0-0' }}</span>
+            <span class="schedule-detail"><strong>Total:</strong> ₹{{ y.total | number:'1.0-0' }}</span>
+            <span class="schedule-detail"><strong>Balance:</strong> ₹{{ y.balance | number:'1.0-0' }}</span>
+            <span class="schedule-detail"><strong>Paid:</strong> {{ y.paidToDate | number:'1.2-2' }}%</span>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <div class="monthly-expanded">
+          <h3>Monthly EMI Schedule for {{ y.year }}</h3>
+          <table mat-table [dataSource]="y.months" class="mat-elevation-z1 monthly-table">
+            <ng-container matColumnDef="month">
+              <th mat-header-cell *matHeaderCellDef>Month</th>
+              <td mat-cell *matCellDef="let m" [attr.data-label]="'Month'">{{ m.monthLabel }}</td>
+            </ng-container>
+            <ng-container matColumnDef="emi">
+              <th mat-header-cell *matHeaderCellDef>EMI Amount</th>
+              <td mat-cell *matCellDef="let m" [attr.data-label]="'EMI Amount'">₹ {{ m.emi | number:'1.0-0' }}</td>
+            </ng-container>
+            <ng-container matColumnDef="principal">
+              <th mat-header-cell *matHeaderCellDef>Principal</th>
+              <td mat-cell *matCellDef="let m" [attr.data-label]="'Principal'">₹ {{ m.principal | number:'1.0-0' }}</td>
+            </ng-container>
+            <ng-container matColumnDef="interest">
+              <th mat-header-cell *matHeaderCellDef>Interest</th>
+              <td mat-cell *matCellDef="let m" [attr.data-label]="'Interest'">₹ {{ m.interest | number:'1.0-0' }}</td>
+            </ng-container>
+            <ng-container matColumnDef="balance">
+              <th mat-header-cell *matHeaderCellDef>Outstanding Balance</th>
+              <td mat-cell *matCellDef="let m" [attr.data-label]="'Outstanding Balance'">₹ {{ m.balance | number:'1.0-0' }}</td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="['month','emi','principal','interest','balance']"></tr>
+            <tr mat-row *matRowDef="let row; columns: ['month','emi','principal','interest','balance'];"></tr>
+          </table>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+
+    <section class="seo-content">
+      <h2>Why Use Our EMI Calculator?</h2>
+      <p>Before taking any loan, it is important to understand:</p>
+      <ul>
+        <li>How much EMI (Equated Monthly Installment) you need to pay every month</li>
+        <li>The total interest payable over the loan tenure</li>
+        <li>The total repayment amount</li>
+        <li>How much loan amount you are eligible for</li>
+        <li>The ideal loan tenure based on your budget</li>
+        <li>The actual interest cost of "No Cost EMI" or "Low EMI" offers</li>
+      </ul>
+      <p>Our calculator helps you answer all these questions instantly with easy-to-understand charts and repayment schedules.</p>
+      <h2>What is EMI?</h2>
+      <p>EMI (Equated Monthly Installment) is the fixed amount paid every month to repay a loan. It includes both the principal amount and the interest charged by the lender.</p>
+      <p>The EMI remains constant throughout the loan tenure, making it easier to plan your monthly budget.</p>
+      <h2>How to Calculate EMI?</h2>
+      <p>Enter the loan amount, interest rate, and loan tenure to calculate your monthly EMI, total interest payable, and repayment schedule instantly.</p>
+      <h2>Loans Supported</h2>
+      <ul>
+        <li>Home Loan EMI Calculator</li>
+        <li>Car Loan EMI Calculator</li>
+        <li>Personal Loan EMI Calculator</li>
+        <li>Education Loan EMI Calculator</li>
+        <li>Business Loan EMI Calculator</li>
+      </ul>
+      <h2>EMI Formula</h2>
+      <p>The formula to calculate EMI is:</p>
+      <p><strong>EMI = [P x R x (1+R)^
+N] / [(1+R)^N-1]</strong></p>
+      <p>Where:</p> 
+      <ul>
+        <li><strong>P</strong> = Loan amount (Principal)</li>
+        <li><strong>R</strong> = Monthly interest rate (Annual rate divided by 12 and converted to decimal)</li>
+        <li><strong>N</strong> = Loan tenure in months (Years multiplied by 12)</li>
+      </ul>
+      <p>Using this formula, our calculator computes your monthly EMI, total interest payable, and total repayment amount instantly as you input your loan details.</p>
+      <h2>Benefits of Using Our EMI Calculator</h2> 
+      <ul>
+        <li><strong>Instant Results:</strong> Get your EMI, total interest, and repayment schedule instantly as you input your loan details.</li>
+        <li><strong>Compare Loan Options:</strong> Adjust the loan amount, interest rate, and tenure to compare different loan scenarios and find the best fit for your budget.</li>
+        <li><strong>Visual Charts:</strong> Understand the break-up of principal and interest payments with easy-to-read charts.</li>
+        <li><strong>Amortization Schedule:</strong> View detailed monthly and annual repayment schedules to plan your finances better.</li>
+        <li><strong>Free to Use:</strong> Our EMI calculator is completely free to use without any hidden charges or sign-ups.</li>
+      </ul>
+      <p>Use our EMI Calculator to make informed financial decisions and choose the right loan for your needs. Whether you're planning to buy a home, car, or need a personal loan, our calculator helps you understand the true cost of borrowing and manage your finances effectively.</p>  
+      
+    </section>
+  </mat-card>
+</div>

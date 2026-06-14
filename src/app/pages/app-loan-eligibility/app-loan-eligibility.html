@@ -1,0 +1,32 @@
+<div class="calc-shell">
+  <div class="description">
+    <strong>Loan Eligibility Calculator</strong>
+    <p>Estimate how much loan you may be eligible for based on your monthly income and typical lending norms. Use this calculator as a planning tool — actual eligibility depends on lenders' policies and credit evaluation.</p>
+  </div>
+
+  <div class="grid">
+    <div class="inputs">
+      <label>Monthly income
+        <input type="number" [(ngModel)]="monthlyIncome" (input)="calculate()" />
+      </label>
+      <label>% of income for EMI
+        <input type="number" [(ngModel)]="allowedPercent" (input)="calculate()" />
+      </label>
+      <label>Expected interest rate (p.a.)
+        <input type="number" [(ngModel)]="rate" (input)="calculate()" />
+      </label>
+      <label>Loan tenure (years)
+        <input type="number" [(ngModel)]="years" (input)="calculate()" />
+      </label>
+
+      <div class="results">
+        <div class="row"><span>Eligible EMI</span><strong>₹{{ eligibleEmi | number:'1.0-0' }}</strong></div>
+        <div class="row total"><span>Estimated loan amount</span><strong>₹{{ eligibleLoan | number:'1.0-0' }}</strong></div>
+      </div>
+    </div>
+
+    <div class="chart">
+      <div class="chart-wrap"><canvas #pieCanvas></canvas></div>
+    </div>
+  </div>
+</div>

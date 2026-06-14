@@ -1,0 +1,11 @@
+:host { display:block }
+.calc-shell { padding:0.8rem }
+.description strong { display:block; margin-bottom:0.25rem }
+.grid { display:grid; grid-template-columns:1fr 220px; gap:1rem }
+.inputs label { display:block; margin-bottom:0.6rem }
+.inputs input { width:100%; padding:0.5rem; border-radius:6px; border:1px solid #e6eef0 }
+.results { margin-top:0.6rem }
+.results .row { display:flex; justify-content:space-between; padding:0.25rem 0 }
+.results .total { font-weight:700 }
+.chart .chart-wrap { height:180px }
+@media (max-width:720px){ .grid{grid-template-columns:1fr} .chart .chart-wrap{height:160px} }

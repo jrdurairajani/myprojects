@@ -1,0 +1,54 @@
+<div class="sip-shell">
+	<div class="tab-toggle">
+		<button class="tab" [class.active]="mode==='sip'" (click)="setMode('sip')">SIP</button>
+		<button class="tab" [class.active]="mode==='lumpsum'" (click)="setMode('lumpsum')">Lumpsum</button>
+	</div>
+
+	<div class="calculator-grid">
+		<div class="inputs">
+			<ng-container *ngIf="mode==='sip'">
+				<label>Monthly investment
+					<input type="number" [(ngModel)]="monthly" (input)="calculate()" />
+				</label>
+
+				<label>Expected return rate (p.a.)
+					<input type="number" [(ngModel)]="sipRate" (input)="calculate()" />
+				</label>
+
+				<label>Time period (years)
+					<input type="number" [(ngModel)]="sipYears" (input)="calculate()" />
+				</label>
+			</ng-container>
+
+			<ng-container *ngIf="mode==='lumpsum'">
+				<label>Invested amount
+					<input type="number" [(ngModel)]="lumpsumAmount" (input)="calculate()" />
+				</label>
+
+				<label>Expected return rate (p.a.)
+					<input type="number" [(ngModel)]="lumpsumRate" (input)="calculate()" />
+				</label>
+
+				<label>Time period (years)
+					<input type="number" [(ngModel)]="lumpsumYears" (input)="calculate()" />
+				</label>
+			</ng-container>
+
+			<div class="results">
+				<div class="row"><span>Invested amount</span><strong>₹{{ invested | number:'1.0-0' }}</strong></div>
+				<div class="row"><span>Est. returns</span><strong>₹{{ estimatedReturns | number:'1.0-0' }}</strong></div>
+				<div class="row total"><span>Total value</span><strong>₹{{ totalValue | number:'1.0-0' }}</strong></div>
+			</div>
+		</div>
+
+		<div class="chart-card">
+			<div class="chart-wrap">
+				<canvas #pieCanvas></canvas>
+			</div>
+			<div class="legend">
+				<div class="legend-item"><span class="swatch invested"></span> Invested amount</div>
+				<div class="legend-item"><span class="swatch returns"></span> Est. returns</div>
+			</div>
+		</div>
+	</div>
+</div>
