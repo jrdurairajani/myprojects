@@ -30,6 +30,17 @@ body {
   font-weight: 700;
   text-decoration: none;
   letter-spacing: 0.02em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  color: white;
+  font-weight: 600;
+  img{
+    width: 40px;
+    height: 40px;
+    display: block;
+  }
 }
 
 .topbar__links a,
@@ -58,7 +69,7 @@ body {
 }
 
 .mobile-nav.open {
-  display: flex;
+  display: none;
 }
 
 .mobile-nav a {

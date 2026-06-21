@@ -1,11 +1,14 @@
 <div class="topbar">
     <div class="topbar__brand">
         <a routerLink="/" class="brand-link">
-            <img src="./../assets/svg/calculator.svg" alt="EMI Calculator">EMI Calculator</a>
+            <img src="assets/svg/calculator.svg" alt="EMI Calculator">EMI Calculator</a>
     </div>
     <div class="topbar__links desktop-only">
-        <a routerLink="/home-loan">Home Loan</a>
+        <a routerLink="/">Home</a>
         <a routerLink="/articles">Articles</a>
+        <a routerLink="/home-loan">Home Loan Calculator</a>
+        <a routerLink="/loan-closure-tips">Loan Closure Tips</a>
+        
     </div>
     <button class="mobile-menu-button mobile-only" type="button" (click)="toggleMobileMenu()">
         <span class="material-icons">menu</span>
@@ -13,7 +16,9 @@
 </div>
 
 <nav class="mobile-nav mobile-only" [class.open]="mobileMenuOpen">
-    <a routerLink="/home-loan" (click)="toggleMobileMenu()">Home Loan</a>
+    <a routerLink="/" (click)="toggleMobileMenu()">Home</a>
+    <a routerLink="/home-loan" (click)="toggleMobileMenu()">Home Loan Calculator</a>
+    <a routerLink="/loan-closure-tips" (click)="toggleMobileMenu()">Loan Closure Tips</a>
     <a routerLink="/articles" (click)="toggleMobileMenu()">Articles</a>
 </nav>
 

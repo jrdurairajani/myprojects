@@ -44,7 +44,7 @@
         <label>EMI Start Month and Year</label>
         <mat-form-field appearance="outline">
           <mat-label>EMI Start (Month & Year)</mat-label>
-          <input matInput readonly [value]="startDate | date:'MMM yyyy'" [matDatepicker]="dp">
+          <input matInput readonly [(ngModel)]="startDate" [matDatepicker]="dp" name="startDate">
           <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
           <mat-datepicker #dp startView="multi-year" (monthSelected)="chosenMonthHandler($event, dp)">
           </mat-datepicker>
@@ -115,51 +115,6 @@
       </div>
       <span class="result-chip">Schedule overview</span>
     </div>
-
-    <!-- <mat-accordion>
-      <mat-expansion-panel *ngFor="let y of yearlyData" [expanded]="expandedYears[y.year]">
-        <mat-expansion-panel-header (click)="toggleYear(y.year)">
-          <mat-panel-title>
-            Loan Repayment Schedule - {{ y.year }}
-          </mat-panel-title>
-          <mat-panel-description>
-            <span class="schedule-detail"><strong>Principal:</strong> ₹{{ y.principal | number:'1.0-0' }}</span>
-            <span class="schedule-detail"><strong>Interest:</strong> ₹{{ y.interest | number:'1.0-0' }}</span>
-            <span class="schedule-detail"><strong>Total:</strong> ₹{{ y.total | number:'1.0-0' }}</span>
-            <span class="schedule-detail"><strong>Balance:</strong> ₹{{ y.balance | number:'1.0-0' }}</span>
-            <span class="schedule-detail"><strong>Paid:</strong> {{ y.paidToDate | number:'1.2-2' }}%</span>
-          </mat-panel-description>
-        </mat-expansion-panel-header>
-
-        <div class="monthly-expanded">
-          <h3>Monthly EMI Schedule for {{ y.year }}</h3>
-          <table mat-table [dataSource]="y.months" class="mat-elevation-z1 monthly-table">
-            <ng-container matColumnDef="month">
-              <th mat-header-cell *matHeaderCellDef>Month</th>
-              <td mat-cell *matCellDef="let m" [attr.data-label]="'Month'">{{ m.monthLabel }}</td>
-            </ng-container>
-            <ng-container matColumnDef="emi">
-              <th mat-header-cell *matHeaderCellDef>EMI Amount</th>
-              <td mat-cell *matCellDef="let m" [attr.data-label]="'EMI Amount'">₹ {{ m.emi | number:'1.0-0' }}</td>
-            </ng-container>
-            <ng-container matColumnDef="principal">
-              <th mat-header-cell *matHeaderCellDef>Principal</th>
-              <td mat-cell *matCellDef="let m" [attr.data-label]="'Principal'">₹ {{ m.principal | number:'1.0-0' }}</td>
-            </ng-container>
-            <ng-container matColumnDef="interest">
-              <th mat-header-cell *matHeaderCellDef>Interest</th>
-              <td mat-cell *matCellDef="let m" [attr.data-label]="'Interest'">₹ {{ m.interest | number:'1.0-0' }}</td>
-            </ng-container>
-            <ng-container matColumnDef="balance">
-              <th mat-header-cell *matHeaderCellDef>Outstanding Balance</th>
-              <td mat-cell *matCellDef="let m" [attr.data-label]="'Outstanding Balance'">₹ {{ m.balance | number:'1.0-0' }}</td>
-            </ng-container>
-            <tr mat-header-row *matHeaderRowDef="['month','emi','principal','interest','balance']"></tr>
-            <tr mat-row *matRowDef="let row; columns: ['month','emi','principal','interest','balance'];"></tr>
-          </table>
-        </div>
-      </mat-expansion-panel>
-    </mat-accordion> -->
 
     <mat-accordion>
       <mat-expansion-panel *ngFor="let y of yearlyData" [expanded]="expandedYears[y.year]">
